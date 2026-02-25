@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job Notification App - Design System Foundation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="top-bar" aria-label="Top Bar">
+        <div class="brand">Job Notification App</div>
+        <div class="progress" aria-label="Progress Indicator">Step 1 / 4</div>
+        <div class="status-badge" aria-label="Status Badge">Not Started</div>
+      </header>
+
+      <section class="context-header" aria-label="Context Header">
+        <h1>Design System Foundation</h1>
+        <p>
+          A stable visual and interaction baseline for a serious consumer SaaS
+          experience.
+        </p>
+      </section>
+
+      <main class="workspace-grid" aria-label="Workspace">
+        <section class="primary-workspace" aria-label="Primary Workspace">
+          <article class="card">
+            <h2>Core Components</h2>
+            <p>
+              This area demonstrates production-ready component styling with
+              predictable spacing, clear hierarchy, and consistent control
+              behavior.
+            </p>
+            <div class="control-row">
+              <button class="btn btn-primary" type="button">Primary Action</button>
+              <button class="btn btn-secondary" type="button">
+                Secondary Action
+              </button>
+            </div>
+            <div class="form-group">
+              <label for="design-token">Example Input</label>
+              <input
+                id="design-token"
+                type="text"
+                placeholder="Components use one border radius and clear focus state"
+              />
+            </div>
+          </article>
+
+          <article class="card empty-state" aria-live="polite">
+            <h2>No Active Modules Yet</h2>
+            <p>
+              The foundation is ready. Add product modules next using this
+              system to keep consistency.
+            </p>
+            <button class="btn btn-secondary" type="button">Define First Module</button>
+          </article>
+
+          <article class="card error-state" role="alert">
+            <h2>Configuration Needs Attention</h2>
+            <p>
+              A required design token is missing. Add the token to the system
+              file and reload to resolve this issue.
+            </p>
+          </article>
+        </section>
+
+        <aside class="secondary-panel" aria-label="Secondary Panel">
+          <section class="panel-block">
+            <h3>Step Explanation</h3>
+            <p>
+              Build and validate base components first so every later feature
+              inherits coherent spacing, typography, and interaction behavior.
+            </p>
+          </section>
+
+          <section class="panel-block">
+            <h3>Copyable Prompt</h3>
+            <div class="prompt-box" role="textbox" aria-label="Copyable Prompt" tabindex="0">
+              Use the design system tokens and components only. Do not add new
+              visual styles until approved.
+            </div>
+          </section>
+
+          <section class="panel-block panel-actions">
+            <button class="btn btn-primary" type="button">Mark In Progress</button>
+            <button class="btn btn-secondary" type="button">Review Tokens</button>
+          </section>
+        </aside>
+      </main>
+
+      <footer class="proof-footer" aria-label="Proof Footer">
+        <h4>Proof Checklist</h4>
+        <ul>
+          <li><span aria-hidden="true">□</span> UI Built</li>
+          <li><span aria-hidden="true">□</span> Logic Working</li>
+          <li><span aria-hidden="true">□</span> Test Passed</li>
+          <li><span aria-hidden="true">□</span> Deployed</li>
+        </ul>
+      </footer>
+    </div>
+  </body>
+</html>
