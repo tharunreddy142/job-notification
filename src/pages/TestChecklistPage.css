@@ -1,0 +1,109 @@
+@import '../styles/tokens.css';
+
+.test-checklist-page {
+  max-width: 760px;
+  display: grid;
+  gap: var(--space-24);
+  padding: var(--space-24) 0;
+}
+
+.test-checklist-page__header {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.test-checklist-page__title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.test-checklist-page__summary {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.test-checklist-page__warning {
+  font-size: 14px;
+  color: rgba(139, 0, 0, 0.85);
+}
+
+.test-checklist-page__message {
+  color: rgba(17, 17, 17, 0.6);
+}
+
+.test-checklist-page__actions {
+  display: flex;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+}
+
+.test-checklist-page__reset-btn,
+.test-checklist-page__ship-link {
+  border: var(--border-subtle);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--color-text);
+  padding: var(--space-8) var(--space-16);
+  font-family: var(--font-body);
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.test-checklist-page__reset-btn:hover,
+.test-checklist-page__ship-link:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.test-checklist-page__ship-link--disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.test-checklist-page__list {
+  border: var(--border-subtle);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+  padding: var(--space-16);
+  display: grid;
+  gap: var(--space-12);
+}
+
+.test-checklist-page__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-8);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.test-checklist-page__item:last-child {
+  border-bottom: none;
+}
+
+.test-checklist-page__checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.test-checklist-page__label {
+  flex: 1;
+  color: var(--color-text);
+  font-size: 15px;
+}
+
+.test-checklist-page__tooltip {
+  font-size: 12px;
+  color: rgba(17, 17, 17, 0.56);
+  border-bottom: 1px dotted rgba(17, 17, 17, 0.42);
+  cursor: help;
+}

@@ -1,0 +1,56 @@
+@import '../styles/tokens.css';
+
+.ship-gate-page {
+  max-width: 720px;
+  display: grid;
+  gap: var(--space-24);
+  padding: var(--space-24) 0;
+}
+
+.ship-gate-page__title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ship-gate-page__locked,
+.ship-gate-page__unlocked {
+  border: var(--border-subtle);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.72);
+  padding: var(--space-24);
+  display: grid;
+  gap: var(--space-8);
+}
+
+.ship-gate-page__message {
+  color: var(--color-text);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.ship-gate-page__subtext {
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 14px;
+}
+
+.ship-gate-page__link {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  border: var(--border-subtle);
+  border-radius: var(--radius);
+  padding: var(--space-8) var(--space-16);
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.ship-gate-page__link:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
