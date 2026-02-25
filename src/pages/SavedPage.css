@@ -1,0 +1,42 @@
+@import '../styles/tokens.css';
+
+.saved-page {
+  display: grid;
+  gap: var(--space-24);
+  padding: var(--space-24) 0;
+}
+
+.saved-page__title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.saved-page__jobs {
+  display: grid;
+  gap: var(--space-16);
+}
+
+.saved-page__empty {
+  max-width: 720px;
+  padding: var(--space-40) 0;
+}
+
+.saved-page__empty-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 var(--space-8) 0;
+}
+
+.saved-page__empty-text {
+  color: rgba(17, 17, 17, 0.6);
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0;
+}
