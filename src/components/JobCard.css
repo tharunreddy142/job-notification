@@ -137,3 +137,27 @@
   color: var(--color-accent);
   border-color: var(--color-accent);
 }
+
+.job-card__match-score {
+  font-weight: 600;
+}
+
+.job-card__match-score--green {
+  background: rgba(95, 111, 82, 0.15);
+  color: var(--color-success);
+}
+
+.job-card__match-score--amber {
+  background: rgba(155, 122, 46, 0.15);
+  color: var(--color-warning);
+}
+
+.job-card__match-score--neutral {
+  background: rgba(17, 17, 17, 0.08);
+  color: rgba(17, 17, 17, 0.7);
+}
+
+.job-card__match-score--grey {
+  background: rgba(17, 17, 17, 0.05);
+  color: rgba(17, 17, 17, 0.5);
+}

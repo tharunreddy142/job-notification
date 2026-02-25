@@ -1,6 +1,35 @@
+import type { ChangeEvent } from 'react';
+import { usePreferences } from '../hooks/usePreferences';
+import { locations, experiences } from '../data/jobs';
 import './SettingsPage.css';
 
+const modes = ['Remote', 'Hybrid', 'Onsite'] as const;
+
 export function SettingsPage() {
+  const { preferences, updatePreference, isLoaded } = usePreferences();
+
+  const handleLocationChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const updatedLocations = Array.from(event.target.selectedOptions, (option) => option.value);
+    updatePreference('preferredLocations', updatedLocations);
+  };
+
+  const handleModeToggle = (mode: string) => {
+    const current = preferences.preferredMode;
+    const updated = current.includes(mode)
+      ? current.filter(m => m !== mode)
+      : [...current, mode];
+    updatePreference('preferredMode', updated);
+  };
+
+  if (!isLoaded) {
+    return (
+      <section className="settings-page" aria-label="Settings">
+        <h1 className="settings-page__title">Settings</h1>
+        <p>Loading...</p>
+      </section>
+    );
+  }
+
   return (
     <section className="settings-page" aria-label="Settings">
       <h1 className="settings-page__title">Settings</h1>
@@ -14,56 +43,113 @@ export function SettingsPage() {
             id="role-keywords"
             type="text"
             className="settings-page__input"
-            placeholder="e.g., Senior Product Manager, Engineering Lead"
+            placeholder="e.g., SDE, Frontend, Backend, Data Analyst"
+            value={preferences.roleKeywords}
+            onChange={(e) => updatePreference('roleKeywords', e.target.value)}
           />
           <p className="settings-page__hint">
-            Comma-separated keywords to match against job titles
+            Comma-separated keywords to match against job titles and descriptions
           </p>
         </div>
 
         <div className="settings-page__field">
-          <label htmlFor="locations" className="settings-page__label">
+          <label htmlFor="preferred-locations" className="settings-page__label">
             Preferred locations
           </label>
-          <input
-            id="locations"
-            type="text"
-            className="settings-page__input"
-            placeholder="e.g., San Francisco, New York, Remote"
-          />
-          <p className="settings-page__hint">
-            Cities, states, or regions you are open to
-          </p>
-        </div>
-
-        <div className="settings-page__field">
-          <label htmlFor="work-mode" className="settings-page__label">
-            Mode
-          </label>
-          <select id="work-mode" className="settings-page__select">
-            <option value="">Select work mode</option>
-            <option value="remote">Remote</option>
-            <option value="hybrid">Hybrid</option>
-            <option value="onsite">Onsite</option>
+          <select
+            id="preferred-locations"
+            className="settings-page__select settings-page__select--multi"
+            multiple
+            value={preferences.preferredLocations}
+            onChange={handleLocationChange}
+          >
+            {locations.map((location) => (
+              <option key={location} value={location}>
+                {location}
+              </option>
+            ))}
           </select>
           <p className="settings-page__hint">
-            Your preferred work arrangement
+            Multi-select cities you are open to
           </p>
         </div>
 
         <div className="settings-page__field">
-          <label htmlFor="experience" className="settings-page__label">
+          <label className="settings-page__label">
+            Preferred mode
+          </label>
+          <div className="settings-page__checkbox-group">
+            {modes.map((mode) => (
+              <label key={mode} className="settings-page__checkbox-label">
+                <input
+                  type="checkbox"
+                  className="settings-page__checkbox"
+                  checked={preferences.preferredMode.includes(mode)}
+                  onChange={() => handleModeToggle(mode)}
+                />
+                <span>{mode}</span>
+              </label>
+            ))}
+          </div>
+          <p className="settings-page__hint">
+            Select your preferred work arrangements
+          </p>
+        </div>
+
+        <div className="settings-page__field">
+          <label htmlFor="experience-level" className="settings-page__label">
             Experience level
           </label>
-          <select id="experience" className="settings-page__select">
-            <option value="">Select experience level</option>
-            <option value="entry">Entry Level (0-2 years)</option>
-            <option value="mid">Mid Level (3-5 years)</option>
-            <option value="senior">Senior Level (6+ years)</option>
-            <option value="lead">Lead / Staff</option>
+          <select 
+            id="experience-level" 
+            className="settings-page__select"
+            value={preferences.experienceLevel}
+            onChange={(e) => updatePreference('experienceLevel', e.target.value)}
+          >
+            <option value="">Any experience level</option>
+            {experiences.map((exp) => (
+              <option key={exp} value={exp}>
+                {exp}
+              </option>
+            ))}
           </select>
           <p className="settings-page__hint">
             Target roles matching your career stage
+          </p>
+        </div>
+
+        <div className="settings-page__field">
+          <label htmlFor="skills" className="settings-page__label">
+            Skills
+          </label>
+          <input
+            id="skills"
+            type="text"
+            className="settings-page__input"
+            placeholder="e.g., React, Python, SQL, AWS"
+            value={preferences.skills}
+            onChange={(e) => updatePreference('skills', e.target.value)}
+          />
+          <p className="settings-page__hint">
+            Comma-separated skills to match against job requirements
+          </p>
+        </div>
+
+        <div className="settings-page__field">
+          <label htmlFor="min-match-score" className="settings-page__label">
+            Minimum match score: {preferences.minMatchScore}%
+          </label>
+          <input
+            id="min-match-score"
+            type="range"
+            className="settings-page__slider"
+            min="0"
+            max="100"
+            value={preferences.minMatchScore}
+            onChange={(e) => updatePreference('minMatchScore', parseInt(e.target.value, 10))}
+          />
+          <p className="settings-page__hint">
+            Only show jobs with match score above this threshold
           </p>
         </div>
       </form>

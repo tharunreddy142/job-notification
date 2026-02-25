@@ -1,15 +1,25 @@
+import { memo } from 'react';
 import type { Job } from '../data/jobs';
+import { getMatchScoreBadgeClass } from '../utils/matchScore';
 import './JobCard.css';
 
 interface JobCardProps {
-  job: Job;
+  job: Job & { matchScore?: number };
   isSaved: boolean;
   onView: (job: Job) => void;
   onSave: (jobId: string) => void;
   onApply: (url: string) => void;
+  showMatchScore?: boolean;
 }
 
-export function JobCard({ job, isSaved, onView, onSave, onApply }: JobCardProps) {
+export const JobCard = memo(function JobCard({
+  job,
+  isSaved,
+  onView,
+  onSave,
+  onApply,
+  showMatchScore = false,
+}: JobCardProps) {
   const getSourceBadgeClass = (source: string) => {
     switch (source) {
       case 'LinkedIn':
@@ -52,6 +62,11 @@ export function JobCard({ job, isSaved, onView, onSave, onApply }: JobCardProps)
         <span className="job-card__badge job-card__badge--salary">
           {job.salaryRange}
         </span>
+        {showMatchScore && job.matchScore !== undefined && (
+          <span className={`job-card__badge job-card__match-score ${getMatchScoreBadgeClass(job.matchScore)}`}>
+            {job.matchScore}% match
+          </span>
+        )}
       </div>
 
       <p className="job-card__posted">Posted {formatPostedTime(job.postedDaysAgo)}</p>
@@ -81,4 +96,4 @@ export function JobCard({ job, isSaved, onView, onSave, onApply }: JobCardProps)
       </div>
     </article>
   );
-}
+});

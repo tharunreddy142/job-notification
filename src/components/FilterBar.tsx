@@ -7,7 +7,7 @@ export interface FilterState {
   mode: string;
   experience: string;
   source: string;
-  sort: 'latest' | 'salary' | 'experience';
+  sort: 'latest' | 'salary' | 'experience' | 'matchScore';
 }
 
 interface FilterBarProps {
@@ -125,6 +125,7 @@ export function FilterBar({ filters, onFilterChange, resultCount }: FilterBarPro
             onChange={(e) => handleChange('sort', e.target.value as FilterState['sort'])}
           >
             <option value="latest">Latest</option>
+            <option value="matchScore">Match Score</option>
             <option value="salary">Salary</option>
             <option value="experience">Experience</option>
           </select>
