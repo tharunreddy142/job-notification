@@ -1,0 +1,35 @@
+@import '../styles/tokens.css';
+
+.not-found-page {
+  max-width: 720px;
+  display: grid;
+  gap: var(--space-8);
+  padding: var(--space-40) 0;
+}
+
+.not-found-page__title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.not-found-page__subtext {
+  color: rgba(17, 17, 17, 0.6);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.not-found-page__link {
+  margin-top: var(--space-16);
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity var(--transition);
+}
+
+.not-found-page__link:hover {
+  opacity: 0.8;
+}
