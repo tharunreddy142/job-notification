@@ -1,0 +1,49 @@
+@import '../styles/tokens.css';
+
+.landing-page {
+  max-width: 720px;
+  display: grid;
+  gap: var(--space-16);
+  padding: var(--space-64) 0;
+}
+
+.landing-page__headline {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.landing-page__subtext {
+  color: rgba(17, 17, 17, 0.6);
+  font-size: 18px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.landing-page__cta {
+  justify-self: start;
+  margin-top: var(--space-8);
+  padding: var(--space-16) var(--space-24);
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: filter var(--transition);
+}
+
+.landing-page__cta:hover {
+  filter: brightness(0.95);
+}
+
+.landing-page__cta:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
+}

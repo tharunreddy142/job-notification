@@ -1,0 +1,25 @@
+@import '../styles/tokens.css';
+
+.empty-state-page {
+  max-width: 720px;
+  display: grid;
+  gap: var(--space-8);
+  padding: var(--space-40) 0;
+}
+
+.empty-state-page__title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.empty-state-page__message {
+  color: rgba(17, 17, 17, 0.6);
+  font-size: 17px;
+  line-height: 1.7;
+  margin: 0;
+}
