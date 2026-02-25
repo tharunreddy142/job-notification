@@ -1,35 +1,66 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { jobs, type Job } from '../data/jobs';
 import { JobCard } from '../components/JobCard';
 import { JobModal } from '../components/JobModal';
+import { StatusToast } from '../components/StatusToast';
+import { type JobStatus, useJobStatus } from '../hooks/useJobStatus';
 import { useSavedJobs } from '../hooks/useSavedJobs';
 import './SavedPage.css';
 
 export function SavedPage() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const { getStatus, setJobStatus, isLoaded: statusLoaded } = useJobStatus();
   const { savedJobIds, isSaved, toggleSave, isLoaded } = useSavedJobs();
 
   const savedJobs = useMemo(() => {
     return jobs.filter((job) => savedJobIds.includes(job.id));
   }, [savedJobIds]);
 
-  const handleViewJob = (job: Job) => {
+  const handleViewJob = useCallback((job: Job) => {
     setSelectedJob(job);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
     setSelectedJob(null);
-  };
+  }, []);
 
-  const handleApply = (url: string) => {
+  const handleApply = useCallback((url: string) => {
     window.open(url, '_blank', 'noopener,noreferrer');
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!toastMessage) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setToastMessage('');
+    }, 2400);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [toastMessage]);
+
+  const handleStatusChange = useCallback((job: Job, status: JobStatus) => {
+    setJobStatus({
+      jobId: job.id,
+      title: job.title,
+      company: job.company,
+      status,
+    });
+
+    if (status !== 'Not Applied') {
+      setToastMessage(`Status updated: ${status}`);
+    }
+  }, [setJobStatus]);
 
   // Show loading state until localStorage is loaded
-  if (!isLoaded) {
+  if (!isLoaded || !statusLoaded) {
     return (
       <section className="saved-page" aria-label="Saved Jobs">
         <h1 className="saved-page__title">Saved</h1>
@@ -54,6 +85,8 @@ export function SavedPage() {
               onView={handleViewJob}
               onSave={toggleSave}
               onApply={handleApply}
+              status={getStatus(job.id)}
+              onStatusChange={handleStatusChange}
             />
           ))}
         </div>
@@ -72,6 +105,7 @@ export function SavedPage() {
         onClose={handleCloseModal}
         onApply={handleApply}
       />
+      <StatusToast visible={!!toastMessage} message={toastMessage} />
     </section>
   );
 }

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { jobs, type Job } from '../data/jobs';
+import { useJobStatus } from '../hooks/useJobStatus';
 import { usePreferences } from '../hooks/usePreferences';
 import { calculateMatchScore } from '../utils/matchScore';
 import './DigestPage.css';
@@ -29,6 +30,7 @@ function getDigestStorageKey(dateKey: string): string {
 
 export function DigestPage() {
   const { preferences, hasPreferences, isLoaded } = usePreferences();
+  const { statusUpdates, isLoaded: statusLoaded } = useJobStatus();
   const [digest, setDigest] = useState<DailyDigest | null>(null);
   const [statusMessage, setStatusMessage] = useState('');
 
@@ -147,6 +149,20 @@ export function DigestPage() {
 
   const showBlockingState = isLoaded && !hasActivePreferences;
   const showNoMatchesState = digest && digest.jobs.length === 0;
+  const recentStatusUpdates = statusUpdates.slice(0, 8);
+
+  const formatStatusDate = (value: string) => {
+    const parsedDate = new Date(value);
+    if (Number.isNaN(parsedDate.getTime())) {
+      return value;
+    }
+
+    return parsedDate.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
 
   return (
     <section className="digest-page" aria-label="Daily Digest">
@@ -231,6 +247,28 @@ export function DigestPage() {
               This digest was generated based on your preferences.
             </footer>
           </article>
+        )}
+
+        {statusLoaded && (
+          <section className="digest-page__updates" aria-label="Recent Status Updates">
+            <h2 className="digest-page__updates-title">Recent Status Updates</h2>
+            {recentStatusUpdates.length > 0 ? (
+              <div className="digest-page__updates-list">
+                {recentStatusUpdates.map((update, index) => (
+                  <div key={`${update.jobId}-${update.changedAt}-${index}`} className="digest-page__updates-item">
+                    <p className="digest-page__updates-job">
+                      {update.title} · {update.company}
+                    </p>
+                    <p className="digest-page__updates-meta">
+                      {update.status} · {formatStatusDate(update.changedAt)}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="digest-page__updates-empty">No recent status updates.</p>
+            )}
+          </section>
         )}
       </div>
     </section>

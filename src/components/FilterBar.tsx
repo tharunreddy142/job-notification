@@ -1,4 +1,5 @@
 import { locations, modes, experiences, sources } from '../data/jobs';
+import { JOB_STATUSES } from '../hooks/useJobStatus';
 import './FilterBar.css';
 
 export interface FilterState {
@@ -7,6 +8,7 @@ export interface FilterState {
   mode: string;
   experience: string;
   source: string;
+  status: string;
   sort: 'latest' | 'salary' | 'experience' | 'matchScore';
 }
 
@@ -109,6 +111,25 @@ export function FilterBar({ filters, onFilterChange, resultCount }: FilterBarPro
             {sources.map((src) => (
               <option key={src} value={src}>
                 {src}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="filter-bar__field">
+          <label htmlFor="filter-status" className="filter-bar__label">
+            Status
+          </label>
+          <select
+            id="filter-status"
+            className="filter-bar__select"
+            value={filters.status}
+            onChange={(e) => handleChange('status', e.target.value)}
+          >
+            <option value="">All</option>
+            {JOB_STATUSES.map((status) => (
+              <option key={status} value={status}>
+                {status}
               </option>
             ))}
           </select>

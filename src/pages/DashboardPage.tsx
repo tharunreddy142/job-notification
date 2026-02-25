@@ -1,9 +1,11 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { jobs, type Job } from '../data/jobs';
 import { FilterBar, type FilterState } from '../components/FilterBar';
 import { JobCard } from '../components/JobCard';
 import { JobModal } from '../components/JobModal';
+import { StatusToast } from '../components/StatusToast';
 import { useSavedJobs } from '../hooks/useSavedJobs';
+import { type JobStatus, useJobStatus } from '../hooks/useJobStatus';
 import { usePreferences } from '../hooks/usePreferences';
 import { calculateMatchScore } from '../utils/matchScore';
 import './DashboardPage.css';
@@ -14,6 +16,7 @@ const initialFilters: FilterState = {
   mode: '',
   experience: '',
   source: '',
+  status: '',
   sort: 'latest',
 };
 
@@ -22,7 +25,9 @@ export function DashboardPage() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showOnlyMatches, setShowOnlyMatches] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
   const { isSaved, toggleSave } = useSavedJobs();
+  const { getStatus, setJobStatus, isLoaded: statusLoaded } = useJobStatus();
   const { preferences, hasPreferences, isLoaded: prefsLoaded } = usePreferences();
   const hasActivePreferences = hasPreferences();
 
@@ -58,8 +63,10 @@ export function DashboardPage() {
       const matchesExperience = !filters.experience || job.experience === filters.experience;
       const matchesSource = !filters.source || job.source === filters.source;
       const matchesThreshold = !showOnlyMatches || job.matchScore >= preferences.minMatchScore;
+      const currentStatus = getStatus(job.id);
+      const matchesStatus = !filters.status || currentStatus === filters.status;
 
-      return matchesKeyword && matchesLocation && matchesMode && matchesExperience && matchesSource && matchesThreshold;
+      return matchesKeyword && matchesLocation && matchesMode && matchesExperience && matchesSource && matchesThreshold && matchesStatus;
     });
 
     // Sort
@@ -80,7 +87,7 @@ export function DashboardPage() {
     }
 
     return result;
-  }, [filters, jobsWithScores, showOnlyMatches, preferences.minMatchScore]);
+  }, [filters, getStatus, jobsWithScores, showOnlyMatches, preferences.minMatchScore]);
 
   const handleViewJob = useCallback((job: Job) => {
     setSelectedJob(job);
@@ -97,6 +104,42 @@ export function DashboardPage() {
   }, []);
 
   const showPreferencesBanner = prefsLoaded && !hasActivePreferences;
+
+  useEffect(() => {
+    if (!toastMessage) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setToastMessage('');
+    }, 2400);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [toastMessage]);
+
+  const handleStatusChange = useCallback((job: Job, status: JobStatus) => {
+    setJobStatus({
+      jobId: job.id,
+      title: job.title,
+      company: job.company,
+      status,
+    });
+
+    if (status !== 'Not Applied') {
+      setToastMessage(`Status updated: ${status}`);
+    }
+  }, [setJobStatus]);
+
+  if (!statusLoaded) {
+    return (
+      <section className="dashboard-page" aria-label="Dashboard">
+        <h1 className="dashboard-page__title">Dashboard</h1>
+        <p className="dashboard-page__empty-text">Loading...</p>
+      </section>
+    );
+  }
 
   return (
     <section className="dashboard-page" aria-label="Dashboard">
@@ -139,6 +182,8 @@ export function DashboardPage() {
               onSave={toggleSave}
               onApply={handleApply}
               showMatchScore={hasActivePreferences}
+              status={getStatus(job.id)}
+              onStatusChange={handleStatusChange}
             />
           ))}
         </div>
@@ -156,6 +201,7 @@ export function DashboardPage() {
         onClose={handleCloseModal}
         onApply={handleApply}
       />
+      <StatusToast visible={!!toastMessage} message={toastMessage} />
     </section>
   );
 }

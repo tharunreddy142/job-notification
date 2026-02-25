@@ -161,3 +161,55 @@
   background: rgba(17, 17, 17, 0.05);
   color: rgba(17, 17, 17, 0.5);
 }
+
+.job-card__status-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.job-card__status-btn {
+  border: var(--border-subtle);
+  background: transparent;
+  color: rgba(17, 17, 17, 0.8);
+  border-radius: var(--radius);
+  padding: 6px 10px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color var(--transition), color var(--transition), background-color var(--transition);
+}
+
+.job-card__status-btn:hover {
+  border-color: rgba(17, 17, 17, 0.4);
+}
+
+.job-card__status-btn--active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(139, 0, 0, 0.08);
+}
+
+.job-card__status-badge {
+  font-weight: 600;
+}
+
+.job-card__status-badge--not-applied {
+  background: rgba(17, 17, 17, 0.08);
+  color: rgba(17, 17, 17, 0.7);
+}
+
+.job-card__status-badge--applied {
+  background: rgba(0, 119, 181, 0.14);
+  color: #0077b5;
+}
+
+.job-card__status-badge--rejected {
+  background: rgba(139, 0, 0, 0.14);
+  color: var(--color-accent);
+}
+
+.job-card__status-badge--selected {
+  background: rgba(95, 111, 82, 0.15);
+  color: var(--color-success);
+}

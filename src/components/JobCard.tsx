@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import type { Job } from '../data/jobs';
+import type { JobStatus } from '../hooks/useJobStatus';
 import { getMatchScoreBadgeClass } from '../utils/matchScore';
 import './JobCard.css';
 
@@ -10,6 +11,8 @@ interface JobCardProps {
   onSave: (jobId: string) => void;
   onApply: (url: string) => void;
   showMatchScore?: boolean;
+  status?: JobStatus;
+  onStatusChange?: (job: Job, status: JobStatus) => void;
 }
 
 export const JobCard = memo(function JobCard({
@@ -19,6 +22,8 @@ export const JobCard = memo(function JobCard({
   onSave,
   onApply,
   showMatchScore = false,
+  status = 'Not Applied',
+  onStatusChange,
 }: JobCardProps) {
   const getSourceBadgeClass = (source: string) => {
     switch (source) {
@@ -37,6 +42,24 @@ export const JobCard = memo(function JobCard({
     if (days === 0) return 'Today';
     if (days === 1) return '1 day ago';
     return `${days} days ago`;
+  };
+
+  const getStatusBadgeClass = (currentStatus: JobStatus) => {
+    switch (currentStatus) {
+      case 'Applied':
+        return 'job-card__status-badge--applied';
+      case 'Rejected':
+        return 'job-card__status-badge--rejected';
+      case 'Selected':
+        return 'job-card__status-badge--selected';
+      case 'Not Applied':
+      default:
+        return 'job-card__status-badge--not-applied';
+    }
+  };
+
+  const handleStatusChange = (nextStatus: JobStatus) => {
+    onStatusChange?.(job, nextStatus);
   };
 
   return (
@@ -67,6 +90,40 @@ export const JobCard = memo(function JobCard({
             {job.matchScore}% match
           </span>
         )}
+        <span className={`job-card__badge job-card__status-badge ${getStatusBadgeClass(status)}`}>
+          {status}
+        </span>
+      </div>
+
+      <div className="job-card__status-group" role="group" aria-label="Application status">
+        <button
+          type="button"
+          className={`job-card__status-btn ${status === 'Not Applied' ? 'job-card__status-btn--active' : ''}`}
+          onClick={() => handleStatusChange('Not Applied')}
+        >
+          Not Applied
+        </button>
+        <button
+          type="button"
+          className={`job-card__status-btn ${status === 'Applied' ? 'job-card__status-btn--active' : ''}`}
+          onClick={() => handleStatusChange('Applied')}
+        >
+          Applied
+        </button>
+        <button
+          type="button"
+          className={`job-card__status-btn ${status === 'Rejected' ? 'job-card__status-btn--active' : ''}`}
+          onClick={() => handleStatusChange('Rejected')}
+        >
+          Rejected
+        </button>
+        <button
+          type="button"
+          className={`job-card__status-btn ${status === 'Selected' ? 'job-card__status-btn--active' : ''}`}
+          onClick={() => handleStatusChange('Selected')}
+        >
+          Selected
+        </button>
       </div>
 
       <p className="job-card__posted">Posted {formatPostedTime(job.postedDaysAgo)}</p>

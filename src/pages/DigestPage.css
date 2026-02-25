@@ -179,6 +179,51 @@
   font-size: 14px;
 }
 
+.digest-page__updates {
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+  padding: var(--space-16);
+  display: grid;
+  gap: var(--space-16);
+}
+
+.digest-page__updates-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.digest-page__updates-list {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.digest-page__updates-item {
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.digest-page__updates-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.digest-page__updates-job {
+  color: var(--color-text);
+  font-size: 15px;
+}
+
+.digest-page__updates-meta {
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 13px;
+}
+
+.digest-page__updates-empty {
+  color: rgba(17, 17, 17, 0.62);
+  font-size: 14px;
+}
+
 @media (max-width: 720px) {
   .digest-page__card {
     padding: var(--space-24);
